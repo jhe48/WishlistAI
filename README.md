@@ -9,9 +9,19 @@ A dynamic, intent-based gift recommendation engine that curates personal gift bo
 **2. Project Structure**
 ```
 └── 📁WishlistAI
-    └── 📁backend
+    └── 📁wishlist-ai-backend
         ├── XX
-    └── 📁frontend
+    └── 📁wishlist-ai-frontend
         ├── XX
     └── README.md
 ```
+
+**3. Technologies Used**
+
+*Frontend*
+- Next.js
+- TypeScript
+
+*Backend*
+- FastAPI
+- Python
