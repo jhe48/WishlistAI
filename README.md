@@ -16,7 +16,6 @@ A dynamic, intent-based gift recommendation engine that curates personal gift bo
     └── README.md
 ```
 ## 3. Usage Instructions
-> Testing. Note: Try to limit it to one-liners if possible and don't delve into API specifics.
 
 ## 4. Technologies Used
 
