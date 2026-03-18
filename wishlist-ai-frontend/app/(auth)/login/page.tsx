@@ -1,4 +1,11 @@
+'use client';
+
+import { useActionState } from 'react';
+import { loginAction } from '@/app/actions/auth';
+
 export default function LoginPage() {
+  const [state, formAction, isPending] = useActionState(loginAction, null);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-8 bg-white p-8 shadow rounded-lg">
@@ -7,7 +14,7 @@ export default function LoginPage() {
             Sign in to your account
           </h2>
         </div>
-        <form className="mt-8 space-y-6" action="#" method="POST">
+        <form className="mt-8 space-y-6" action={formAction}>
           <div className="space-y-4 rounded-md shadow-sm">
             <div>
               <label htmlFor="email-address" className="sr-only">Email address</label>
@@ -35,12 +42,19 @@ export default function LoginPage() {
             </div>
           </div>
 
+          {state?.error && (
+            <div className="text-red-500 text-sm text-center">
+              {state.error}
+            </div>
+          )}
+
           <div>
             <button
               type="submit"
-              className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+              disabled={isPending}
+              className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-blue-300"
             >
-              Sign in
+              {isPending ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>
