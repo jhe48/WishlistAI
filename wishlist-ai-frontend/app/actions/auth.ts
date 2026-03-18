@@ -40,18 +40,23 @@ export async function loginAction(prevState: any, formData: FormData) {
   const email = formData.get('email')
   const password = formData.get('password')
 
-  // 1. Next.js securely calls your FastAPI backend
-  const response = await fetch('http://localhost:8000/api/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, password }),
-  })
+  let data;
+  try {
+    // 1. Next.js securely calls your FastAPI backend
+    const response = await fetch('http://127.0.0.1:8000/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-  if (!response.ok) {
-    throw new Error('Invalid credentials')
+    data = await response.json(); // Contains the JWT from FastAPI
+
+    if (!response.ok) {
+      return { error: data.detail || 'Invalid credentials', success: false };
+    }
+  } catch (error) {
+    return { error: 'Internal Server Error: Is the backend running?', success: false };
   }
-
-  const data = await response.json() // Contains the JWT from FastAPI
 
   // 2. Next.js sets the HTTP-Only cookie on the user's browser
   const cookieStore = await cookies()
