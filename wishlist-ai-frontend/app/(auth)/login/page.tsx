@@ -1,63 +1,73 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState, useEffect } from 'react';
+import Link from 'next/link';
 import { loginAction } from '@/app/actions/auth';
+import { useTheme } from 'next-themes';
 
 export default function LoginPage() {
   const [state, formAction, isPending] = useActionState(loginAction, null);
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 bg-white p-8 shadow rounded-lg">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
+    <div className="min-h-screen flex flex-col items-center justify-center transition-colors duration-500 bg-[#fafafa] dark:bg-[#121212] text-zinc-900 dark:text-zinc-200">
+      {mounted && (
+        <div className="absolute top-6 right-6">
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="group flex items-center gap-2 text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-all duration-300"
+          >
+            <span className="w-2 h-2 rounded-full border border-current group-hover:bg-current transition-colors duration-300"></span>
+            {theme === 'dark' ? 'Unwrap' : 'Wrap'}
+          </button>
         </div>
-        <form className="mt-8 space-y-6" action={formAction}>
-          <div className="space-y-4 rounded-md shadow-sm">
-            <div>
-              <label htmlFor="email-address" className="sr-only">Email address</label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 px-3"
-                placeholder="Email address"
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">Password</label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 px-3"
-                placeholder="Password"
-              />
-            </div>
-          </div>
+      )}
+
+      <div className="w-full max-w-sm p-8">
+        <h1 className="text-5xl mb-12 text-center tracking-wide font-[family-name:var(--font-franchise)]">
+          WishlistAI awaits. Log in.
+        </h1>
+
+        <form className="flex flex-col gap-6" action={formAction}>
+          <input
+            name="email"
+            type="email"
+            placeholder="Email"
+            className="w-full py-2 bg-transparent border-b border-gray-400 focus:border-current outline-none transition-colors placeholder-gray-400"
+            required
+          />
+          
+          <input
+            name="password"
+            type="password"
+            placeholder="Password"
+            className="w-full py-2 bg-transparent border-b border-gray-400 focus:border-current outline-none transition-colors placeholder-gray-400"
+            required
+          />
 
           {state?.error && (
             <div className="text-red-500 text-sm text-center">
               {state.error}
             </div>
           )}
-
-          <div>
-            <button
-              type="submit"
-              disabled={isPending}
-              className="group relative flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:bg-blue-300"
-            >
-              {isPending ? 'Signing in...' : 'Sign in'}
-            </button>
-          </div>
+          
+          <button
+            type="submit"
+            disabled={isPending}
+            className="mt-6 py-3 rounded font-medium tracking-wide transition-colors disabled:opacity-50 bg-zinc-900 dark:bg-zinc-200 text-[#fafafa] dark:text-[#121212] hover:bg-zinc-800 dark:hover:bg-white"
+          >
+            {isPending ? 'Entering...' : 'Enter'}
+          </button>
         </form>
+
+        <div className="mt-16 text-center text-sm opacity-60 hover:opacity-100 transition-opacity">
+          <Link href="/register">
+            No account? Register here.
+          </Link>
+        </div>
       </div>
     </div>
   );
