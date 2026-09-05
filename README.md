@@ -15,9 +15,8 @@ A dynamic, intent-based gift recommendation engine that curates personal gift bo
         ├── XX
     └── README.md
 ```
-## 3. Usage Instructions
 
-## 4. Technologies Used
+## 3. Technologies Used
 
 - Frontend
     - Next.js
